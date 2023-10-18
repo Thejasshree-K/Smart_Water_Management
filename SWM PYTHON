@@ -1,0 +1,87 @@
+import random
+import time
+
+class SmartWaterMeter:
+    def __init__(self, location, pin):
+        self.location = location
+        self.water_usage = 0
+        self.pin = pin  # Pin used for simulating activity (optional)
+
+    def measure_water_usage(self):
+        # Simulate water usage data
+        simulated_data = random.randint(1, 50)
+        self.water_usage += simulated_data
+
+        # Simulate water meter activity using a pin (optional)
+        # digitalWrite(self.pin, HIGH)  # Simulate the meter is active
+        # Simulate the time taken to measure water usage (optional)
+        # delay(100)
+        # digitalWrite(self.pin, LOW)  # Simulate the meter is inactive (optional)
+
+        return self.water_usage
+
+class WaterQualitySensor:
+    def __init__(self, location, pin):
+        self.location = location
+        self.water_quality = "Good"
+        self.pin = pin  # Pin used for simulating activity (optional)
+
+    def measure_water_quality(self):
+        # Simulate water quality data
+        simulated_data = "Good"
+
+        # Simulate sensor activity using a pin (optional)
+        # digitalWrite(self.pin, HIGH)  # Simulate the sensor is active
+        # Simulate the time taken to measure water quality (optional)
+        # delay(100)
+        # digitalWrite(self.pin, LOW)  # Simulate the sensor is inactive (optional)
+
+        return simulated_data
+
+class CloudPlatform:
+    def __init__(self):
+        self.water_meters = {}
+        self.water_quality_sensors = {}
+
+    def store_water_meter_data(self, meter_location, data):
+        self.water_meters[meter_location] = data
+
+    def store_water_quality_data(self, sensor_location, data):
+        self.water_quality_sensors[sensor_location] = data
+
+def data_processing(data):
+    # Analyze and process incoming data here
+    for location, usage in data.water_meters.items():
+        if usage > 40:
+            print(f"Potential water leak detected at {location}. Alert sent.")
+    for location, quality in data.water_quality_sensors.items():
+        if quality != "Good":
+            print(f"Water quality issue detected at {location}. Alert sent.")
+
+# Specify the pins for each component
+meter1 = SmartWaterMeter("Residential", 2)  # Pin 2 used for simulating activity (optional)
+meter2 = SmartWaterMeter("Commercial", 3)   # Pin 3 used for simulating activity (optional)
+quality_sensor1 = WaterQualitySensor("Reservoir", 4)  # Pin 4 used for simulating activity (optional)
+quality_sensor2 = WaterQualitySensor("Treatment Plant", 5)  # Pin 5 used for simulating activity (optional)
+
+# Create a cloud platform instance
+cloud_platform = CloudPlatform()
+
+while True:
+    # Simulate water consumption and quality data
+    meter1_data = meter1.measure_water_usage()
+    meter2_data = meter2.measure_water_usage()
+    quality_sensor1_data = quality_sensor1.measure_water_quality()
+    quality_sensor2_data = quality_sensor2.measure_water_quality()
+
+    # Store data in the cloud platform
+    cloud_platform.store_water_meter_data(meter1.location, meter1_data)
+    cloud_platform.store_water_meter_data(meter2.location, meter2_data)
+    cloud_platform.store_water_quality_data(quality_sensor1.location, quality_sensor1_data)
+    cloud_platform.store_water_quality_data(quality_sensor2.location, quality_sensor2_data)
+
+    # Process the stored data (simplified)
+    data_processing(cloud_platform)
+
+    # Simulate data collection at regular intervals (e.g., every 5 minutes)
+    time.sleep(300)  # Sleep for 5 minutes
