@@ -1,0 +1,90 @@
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(10, 11); // Define RX and TX pins for communication with a serial terminal
+
+class SmartWaterMeter {
+  public:
+    SmartWaterMeter(String location, int pin) {
+      this->location = location;
+      this->pin = pin;
+      water_usage = 0;
+      pinMode(pin, OUTPUT);
+    }
+
+    int measure_water_usage() {
+      int simulatedUsage = random(1, 51); // Simulate water usage data
+      water_usage += simulatedUsage;
+      digitalWrite(pin, HIGH); // Simulate water meter activity using an LED (optional)
+      delay(100); // Simulate the time taken to measure water usage
+      digitalWrite(pin, LOW);
+      return water_usage;
+    }
+
+  private:
+    String location;
+    int water_usage;
+    int pin;
+};
+
+class WaterQualitySensor {
+  public:
+    WaterQualitySensor(String location, int pin) {
+      this->location = location;
+      this->pin = pin;
+      water_quality = "Good";
+      pinMode(pin, OUTPUT);
+    }
+
+    String measure_water_quality() {
+      // Simulate water quality data
+      digitalWrite(pin, HIGH); // Simulate sensor activity using an LED (optional)
+      delay(100); // Simulate the time taken to measure water quality
+      digitalWrite(pin, LOW);
+      return water_quality;
+    }
+
+  private:
+    String location;
+    String water_quality;
+    int pin;
+};
+
+SmartWaterMeter meter1("Residential", 2); // Define the pin for the first water meter (e.g., pin 2)
+SmartWaterMeter meter2("Commercial", 3);  // Define the pin for the second water meter (e.g., pin 3)
+WaterQualitySensor sensor1("Reservoir", 4); // Define the pin for the first water quality sensor (e.g., pin 4)
+WaterQualitySensor sensor2("Treatment Plant", 5); // Define the pin for the second water quality sensor (e.g., pin 5)
+
+void setup() {
+  mySerial.begin(9600);
+}
+
+void loop() {
+  // Simulate water consumption and quality data
+  int meter1_data = meter1.measure_water_usage();
+  int meter2_data = meter2.measure_water_usage();
+  String sensor1_data = sensor1.measure_water_quality();
+  String sensor2_data = sensor2.measure_water_quality();
+
+  // Print data to the serial terminal
+  mySerial.print("Meter 1 - Location: ");
+  mySerial.print(meter1_data);
+  mySerial.print(" - Water Usage: ");
+  mySerial.println(meter1_data);
+
+  mySerial.print("Meter 2 - Location: ");
+  mySerial.print(meter2_data);
+  mySerial.print(" - Water Usage: ");
+  mySerial.println(meter2_data);
+
+  mySerial.print("Sensor 1 - Location: ");
+  mySerial.print(sensor1_data);
+  mySerial.print(" - Water Quality: ");
+  mySerial.println(sensor1_data);
+
+  mySerial.print("Sensor 2 - Location: ");
+  mySerial.print(sensor2_data);
+  mySerial.print(" - Water Quality: ");
+  mySerial.println(sensor2_data);
+
+  delay(300000); // Sleep for 5 minutes (300,000 milliseconds)
+}
